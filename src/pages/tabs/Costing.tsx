@@ -14,8 +14,8 @@ export default function Costing({ data }: { data: SimData }) {
   const diff = r.refCost != null ? r.unitCost - r.refCost : null
   const extra = (x: { dna: number; marketing: number }) => [...(x.dna ? [{ label: 'D&A', usd: x.dna }] : []), ...(x.marketing ? [{ label: 'Marketing', usd: x.marketing }] : [])]
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3 @2xl:grid-cols-4">
+    <div className="space-y-12">
+      <div className="grid grid-cols-2 gap-4 @2xl:grid-cols-4">
         <Kpi label="Unit cost" value={f2(r.unitCost)} unit="USD/t" delta={r.name} />
         <Kpi label={`${input.referenceId} unit cost`} value={f2(r.refCost)} unit="USD/t" delta={input.refCostOverride != null && snap.id === 'today' ? 'Deck figure (you chose)' : snap.id === 'today' ? 'Standard cost 2026' : `CRU · ${snap.label}`} />
         <Kpi label="Difference" value={diff == null ? '—' : sign(diff)} unit="USD/t" delta={diff == null ? '' : diff < 0 ? '▼ raw-material savings' : '▲ higher than reference'} />
@@ -28,8 +28,8 @@ export default function Costing({ data }: { data: SimData }) {
       <div className="grid gap-4 @4xl:grid-cols-2">
         <Card title="Recipe × input prices" sub="Source: Standard cost · 2026" actions={<SourceChip>Recipes</SourceChip>}>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[420px] text-[13px]">
-              <thead><tr className="border-b text-xs text-muted-foreground"><th className="py-2.5 text-left font-medium">Ingredient</th><th className="py-2.5 text-right font-medium">t / t</th><th className="py-2.5 text-right font-medium">USD/t</th><th className="py-2.5 text-right font-medium">USD/t prod.</th></tr></thead>
+            <table className="tbl w-full min-w-[420px] text-sm">
+              <thead><tr className="border-b text-[13px] text-muted-foreground"><th className="py-2.5 text-left font-medium">Ingredient</th><th className="py-2.5 text-right font-medium">t / t</th><th className="py-2.5 text-right font-medium">USD/t</th><th className="py-2.5 text-right font-medium">USD/t prod.</th></tr></thead>
               <tbody>
                 {['ammonia', 'kcl', 'rockDry', 'rockWet', 'sulphur'].map((id) => {
                   const l = r.lines.find((x) => x.id === id)

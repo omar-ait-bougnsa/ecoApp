@@ -48,8 +48,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex h-dvh w-full overflow-hidden bg-background">
       <AppSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex h-12 shrink-0 items-center gap-2 border-b px-3 lg:hidden">
-          <button aria-label="Open menu" onClick={() => setDrawer(true)} className="rounded-md p-1.5 hover:bg-accent"><Menu className="size-5" /></button>
+        <div className="flex h-12 shrink-0 items-center gap-2 border-b px-3 md:hidden">
+          <button aria-label="Open menu" onClick={() => setDrawer(true)} className="rounded-md border bg-background p-2 hover:bg-accent"><Menu className="size-5" /></button>
           <Logo /><span className="text-sm font-semibold">Eco Value Simulator</span>
         </div>
         <main className="flex min-h-0 flex-1 flex-col">{children}</main>

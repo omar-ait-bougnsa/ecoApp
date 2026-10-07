@@ -97,7 +97,7 @@ function ReasoningTrigger({
       onClick={() => onOpenChange(!isOpen)}
       {...props}
     >
-      <span className="text-primary">{children}</span>
+      <span className="text-foreground">{children}</span>
       <div
         className={cn(
           "transform transition-transform",

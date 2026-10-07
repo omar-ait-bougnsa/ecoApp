@@ -46,29 +46,29 @@ export function UploadReviewSheet() {
     <Sheet open={open} onOpenChange={(o) => !o && close()}>
       <SheetContent side="right" className="flex w-full flex-col gap-0 p-0 sm:max-w-[480px]">
         <SheetDescription className="sr-only">Review an uploaded file before using it</SheetDescription>
-        <div className="flex h-16 shrink-0 flex-col justify-center border-b pl-5 pr-14"><SheetTitle className="text-base">{stage === 'found' ? 'What I found' : 'Upload document'}</SheetTitle><p className="text-xs text-muted-foreground">{stage === 'found' ? 'Review before this data is used in simulations' : 'The type is detected automatically'}</p></div>
+        <div className="flex h-16 shrink-0 flex-col justify-center border-b pl-5 pr-14"><SheetTitle className="text-base">{stage === 'found' ? 'What I found' : 'Upload document'}</SheetTitle><p className="text-[13px] text-muted-foreground">{stage === 'found' ? 'Review before this data is used in simulations' : 'The type is detected automatically'}</p></div>
         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-5">
           {stage === 'pick' && (
             <div className="space-y-3">
-              <button onClick={() => input.current?.click()} className="flex w-full flex-col items-center gap-2 rounded-xl border border-dashed p-8 text-center hover:bg-accent"><Upload className="size-5" /><span className="text-sm font-medium">Choose a file</span><span className="text-xs text-muted-foreground">.xlsx or .csv · Prices, freight, agro tests, crop prices</span></button>
+              <button onClick={() => input.current?.click()} className="flex w-full flex-col items-center gap-2 rounded-xl border border-dashed p-8 text-center hover:bg-accent"><Upload className="size-5" /><span className="text-sm font-medium">Choose a file</span><span className="text-[13px] text-muted-foreground">.xlsx or .csv · Prices, freight, agro tests, crop prices</span></button>
               <input ref={input} type="file" accept=".xlsx,.xls,.csv" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void start(detect(f.name, f.size, f.lastModified)) }} />
-              <div className="text-center text-xs text-muted-foreground">or try a sample</div>
+              <div className="text-center text-[13px] text-muted-foreground">or try a sample</div>
               <Button variant="outline" className="w-full justify-start gap-2" onClick={() => void start(detect('argus-fob-morocco-30-09-2026.xlsx', 48 * 1024, Date.now()))}><FileText className="size-4" />argus-fob-morocco-30-09-2026.xlsx</Button>
             </div>
           )}
           {found && stage !== 'pick' && (
             <>
-              <div className="flex items-center gap-3 rounded-[10px] border p-3"><FileText className="size-5" /><div className="min-w-0 flex-1"><div className="truncate text-[13px] font-medium">{found.name}</div><div className="text-xs text-muted-foreground">{found.size}{stage === 'found' ? ' · read in 0.8 s' : ''}</div></div>{stage === 'found' ? <Pill><Check className="size-3" />Read</Pill> : <span className="size-4 animate-spin rounded-full border-2 border-foreground border-t-transparent" />}</div>
+              <div className="flex items-center gap-3 rounded-[10px] border p-3"><FileText className="size-5" /><div className="min-w-0 flex-1"><div className="truncate text-sm font-medium">{found.name}</div><div className="text-[13px] text-muted-foreground">{found.size}{stage === 'found' ? ' · read in 0.8 s' : ''}</div></div>{stage === 'found' ? <Pill><Check className="size-3" />Read</Pill> : <span className="size-4 animate-spin rounded-full border-2 border-foreground border-t-transparent" />}</div>
               {stage === 'reading' && <p className="text-sm text-muted-foreground">Reading “{found.name}”…</p>}
               {stage === 'found' && (
                 <>
-                  <div className="overflow-hidden rounded-[10px] border text-[13px]">
+                  <div className="overflow-hidden rounded-[10px] border text-sm">
                     {([['Detected type', found.typeLabel, false], ['File date', dayLong(found.fileDate), true], ['Data through', `${dayLong(found.dataThrough)} (last row)`, true], ['Series', found.series, false]] as const).map(([k, v, mono]) => (
                       <div key={k} className="flex gap-3 border-b px-3.5 py-2.5"><span className="w-[110px] shrink-0 text-muted-foreground">{k}</span><span className={`font-medium ${mono ? 'num' : ''}`}>{v}</span></div>))}
                     <div className="flex gap-3 px-3.5 py-2.5"><span className="w-[110px] shrink-0 text-muted-foreground">Affects</span><span className="flex flex-wrap gap-1.5">{found.affects.map((a) => <SourceChip key={a}>{a}</SourceChip>)}</span></div>
                   </div>
-                  {found.resolves && <div className="flex items-start gap-2.5 rounded-lg bg-muted p-3"><Check className="mt-0.5 size-4" /><div><div className="text-[13px] font-medium">Resolves a flag</div><div className="text-xs text-muted-foreground">Prices will be 6 days apart from freight (24 Sep) — within the 2-month threshold.</div></div></div>}
-                  {found.warn && <div className="flex items-start gap-2.5 rounded-lg bg-warning-bg p-3 text-warning-fg"><TriangleAlert className="mt-0.5 size-4" /><div><div className="text-[13px] font-medium">TSP FOB quote: low 710 &gt; high 691</div><div className="text-xs opacity-80">{found.warn.split('. ').slice(1).join('. ')}</div></div></div>}
+                  {found.resolves && <div className="flex items-start gap-2.5 rounded-lg bg-muted p-3"><Check className="mt-0.5 size-4" /><div><div className="text-sm font-medium">Resolves a flag</div><div className="text-[13px] text-muted-foreground">Prices will be 6 days apart from freight (24 Sep) — within the 2-month threshold.</div></div></div>}
+                  {found.warn && <div className="flex items-start gap-2.5 rounded-lg bg-warning-bg p-3 text-warning-fg"><TriangleAlert className="mt-0.5 size-4" /><div><div className="text-sm font-medium">TSP FOB quote: low 710 &gt; high 691</div><div className="text-[13px] opacity-80">{found.warn.split('. ').slice(1).join('. ')}</div></div></div>}
                 </>
               )}
             </>

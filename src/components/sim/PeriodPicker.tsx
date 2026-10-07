@@ -37,17 +37,17 @@ export function PeriodPicker({ value, onChange, variant = 'chip', className }: {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         {variant === 'chip' ? (
-          <button className={cn('inline-flex h-[30px] items-center gap-1.5 rounded-md border bg-background px-2.5 text-[13px] hover:bg-accent', className)} aria-label="Analysis period" data-testid="period-picker">
+          <button className={cn('inline-flex h-[30px] items-center gap-1.5 rounded-md border bg-background px-2.5 text-sm hover:bg-accent', className)} aria-label="Analysis period" data-testid="period-picker">
             <CalendarRange className="size-3.5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Analysis period</span>
+            <span className="text-[13px] text-muted-foreground">Analysis period</span>
             <span className="font-medium">{periodLabel(value)}</span>
             <ChevronDown className="size-3 text-muted-foreground" />
           </button>
         ) : (
-          <button className={cn('flex h-9 w-full items-center gap-2 rounded-md border bg-background px-3 text-left text-[13px]', className)} aria-label="Analysis period" data-testid="period-picker">
+          <button className={cn('flex h-9 w-full items-center gap-2 rounded-md border bg-background px-3 text-left text-sm', className)} aria-label="Analysis period" data-testid="period-picker">
             <CalendarRange className="size-3.5 text-muted-foreground" />
             <span className="font-medium">{periodLabel(value)}</span>
-            {value.from !== value.to && <span className="num ml-1 text-xs text-muted-foreground">{dayLong(value.from)} → {dayLong(value.to)}</span>}
+            {value.from !== value.to && <span className="num ml-1 text-[13px] text-muted-foreground">{dayLong(value.from)} → {dayLong(value.to)}</span>}
             <ChevronDown className="ml-auto size-3.5 text-muted-foreground" />
           </button>
         )}
@@ -55,31 +55,31 @@ export function PeriodPicker({ value, onChange, variant = 'chip', className }: {
       <PopoverContent align="start" className="w-[320px] p-3">
         <div className="grid grid-cols-4 gap-0.5 rounded-lg bg-muted p-0.5" role="tablist" aria-label="Period type">
           {MODES.map(([m, l]) => (
-            <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={cn('rounded-md py-1.5 text-[13px] transition-colors', mode === m ? 'border bg-background font-medium' : 'text-muted-foreground hover:text-foreground')}>{l}</button>
+            <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={cn('rounded-md py-1.5 text-sm transition-colors', mode === m ? 'border bg-background font-medium' : 'text-muted-foreground hover:text-foreground')}>{l}</button>
           ))}
         </div>
 
         <div className="mt-3 min-h-[92px]">
           {mode === 'day' && (
-            <label className="block space-y-1.5"><span className="text-xs text-muted-foreground">A single day</span>
+            <label className="block space-y-1.5"><span className="text-[13px] text-muted-foreground">A single day</span>
               <Input type="date" aria-label="Day" min={DATA_START} max={DATA_END} value={day} onChange={(e) => setDay(e.target.value)} className="h-9" /></label>
           )}
           {mode === 'month' && (
-            <label className="block space-y-1.5"><span className="text-xs text-muted-foreground">A calendar month</span>
+            <label className="block space-y-1.5"><span className="text-[13px] text-muted-foreground">A calendar month</span>
               <Input type="month" aria-label="Month" min={DATA_START.slice(0, 7)} max={DATA_END.slice(0, 7)} value={month} onChange={(e) => setMonth(e.target.value)} className="h-9" /></label>
           )}
           {mode === 'year' && (
-            <div className="space-y-1.5"><span className="text-xs text-muted-foreground">A calendar year</span>
+            <div className="space-y-1.5"><span className="text-[13px] text-muted-foreground">A calendar year</span>
               <div className="grid grid-cols-3 gap-1.5">
                 {YEARS.map((y) => (
-                  <button key={y} onClick={() => pick(yearPeriod(y))} className={cn('rounded-md border py-2 text-[13px] hover:bg-accent', samePeriod(clampPeriod(value), yearPeriod(y)) && 'border-foreground font-medium')}>{y === 2026 ? '2026 YTD' : y}</button>
+                  <button key={y} onClick={() => pick(yearPeriod(y))} className={cn('rounded-md border py-2 text-sm hover:bg-accent', samePeriod(clampPeriod(value), yearPeriod(y)) && 'border-foreground font-medium')}>{y === 2026 ? '2026 YTD' : y}</button>
                 ))}
               </div></div>
           )}
           {mode === 'range' && (
             <div className="grid grid-cols-2 gap-2">
-              <label className="space-y-1.5"><span className="text-xs text-muted-foreground">From</span><Input type="date" aria-label="From" min={DATA_START} max={DATA_END} value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 text-xs" /></label>
-              <label className="space-y-1.5"><span className="text-xs text-muted-foreground">To</span><Input type="date" aria-label="To" min={DATA_START} max={DATA_END} value={to} onChange={(e) => setTo(e.target.value)} className="h-9 text-xs" /></label>
+              <label className="space-y-1.5"><span className="text-[13px] text-muted-foreground">From</span><Input type="date" aria-label="From" min={DATA_START} max={DATA_END} value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 text-[13px]" /></label>
+              <label className="space-y-1.5"><span className="text-[13px] text-muted-foreground">To</span><Input type="date" aria-label="To" min={DATA_START} max={DATA_END} value={to} onChange={(e) => setTo(e.target.value)} className="h-9 text-[13px]" /></label>
             </div>
           )}
         </div>

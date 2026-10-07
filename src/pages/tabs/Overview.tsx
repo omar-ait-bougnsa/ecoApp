@@ -25,16 +25,16 @@ export function ComparePanel({ data }: { data: SimData }) {
       <Card title="Changed inputs" sub={`v${cmp.version} → v${run.version}`}>
         {diffs.length === 0 ? <p className="text-sm text-muted-foreground">No input changed.</p> : (
           <div className="space-y-2">{diffs.map((d) => (
-            <div key={String(d.key)} className="flex items-center gap-2 rounded-lg border p-3 text-[13px]">
+            <div key={String(d.key)} className="flex items-center gap-2 rounded-lg border p-3 text-sm">
               <span>{KEYLABEL[String(d.key)] ?? String(d.key)}</span><span className="flex-1" />
               <span className="num text-muted-foreground line-through">{fmtVal(String(d.key), d.before)}</span><span className="text-muted-foreground">→</span><span className="num font-semibold">{fmtVal(String(d.key), d.after)}</span>
             </div>))}</div>
         )}
-        <div className="mt-3 text-xs text-muted-foreground">Reason</div>
-        <p className="text-[13px]">{run.input.comment || run.summary}</p>
+        <div className="mt-3 text-[13px] text-muted-foreground">Reason</div>
+        <p className="text-sm">{run.input.comment || run.summary}</p>
       </Card>
       <Card title="Output changes" sub="USD/t">
-        <table className="w-full text-[13px]"><thead><tr className="border-b text-xs text-muted-foreground"><th className="py-2 text-left font-medium">Method</th><th className="py-2 text-right font-medium">v{cmp.version}</th><th className="py-2 text-right font-medium">v{run.version}</th><th className="py-2 text-right font-medium">Δ</th></tr></thead>
+        <table className="tbl w-full text-sm"><thead><tr className="border-b text-[13px] text-muted-foreground"><th className="py-2 text-left font-medium">Method</th><th className="py-2 text-right font-medium">v{cmp.version}</th><th className="py-2 text-right font-medium">v{run.version}</th><th className="py-2 text-right font-medium">Δ</th></tr></thead>
           <tbody>{rows.map(({ m, a: x, b: y }) => { const ch = x != null && y != null && Math.abs(x - y) > 0.004; return (
             <tr key={m} className={cn('border-b', ch && 'bg-muted/60')}><td className="py-2.5">{METHOD_LABEL[m]}</td><td className="num py-2.5 text-right">{x == null ? 'Needs input' : f2(x)}</td><td className="num py-2.5 text-right">{y == null ? 'Needs input' : f2(y)}</td><td className="num py-2.5 text-right font-medium">{ch ? sign(y! - x!) : '—'}</td></tr>) })}</tbody></table>
       </Card>
@@ -51,9 +51,9 @@ export default function Overview({ data }: { data: SimData }) {
   const open = out.flags.filter((f) => f.severity !== 'resolved')
   const gotoHyp = (k: string) => openHypotheses(k)
   return (
-    <div className="space-y-5">
+    <div className="space-y-12">
       <PivotBar data={data} />
-      <div className="grid grid-cols-2 gap-3 @2xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 @2xl:grid-cols-4">
         <Kpi label="Recommended price" value={f2(r.anchorPrice)} unit="USD/t" delta={dlt(r.anchorPrice, cmpR?.anchorPrice) ?? METHOD_LABEL[input.anchor]} />
         <Kpi label="CGM per t" value={f2(r.cgm)} unit="USD/t" delta={dlt(r.cgm, cmpR?.cgm) ?? `${arrow((r.cgm ?? 0) - (r.cgmRef ?? 0))} ${f2(Math.abs((r.cgm ?? 0) - (r.cgmRef ?? 0)))} vs ${input.referenceId} ${f2(r.cgmRef)}`} />
         <Kpi label="CGM per t P2O5" value={f2(r.cgmP2O5)} unit="USD/t" delta={`${input.referenceId} ${r.cgmRef != null ? f2(r.cgmRef / refP2) : '—'}`} />
@@ -68,7 +68,7 @@ export default function Overview({ data }: { data: SimData }) {
           {out.flags.map((f) => <FlagRow key={f.id} flag={f} onAction={(fl) => (fl.action?.kind === 'review' ? setView(sim.id, { tab: 'pricing' }) : openFlagTarget(fl, sim.id, nav))} />)}
         </div>
       </Card>
-      <div className="grid gap-3 @3xl:grid-cols-2">
+      <div className="grid gap-4 @3xl:grid-cols-2">
         <Card title="Price by method" sub={`USD/t · vertical line = ${input.referenceId}`}><MethodBars r={r} refLabel={input.referenceId} /></Card>
         <Card title="Volume ramp-up" sub="Illustrative, not a forecast · kt/yr"><RampChart ramp={r.ramp} share={input.marketShare} /></Card>
         <Card title="CGM waterfall" sub={`USD/t · ${input.referenceId} → new product`}><Waterfall r={r} /></Card>

@@ -15,16 +15,16 @@ function Sized({ h, children }: { h: number; children: (w: number) => ReactNode 
   )
 }
 
-const T = ({ x, y, children, anchor = 'start', mono, strong, size = 11, muted = true }: { x: number; y: number; children: ReactNode; anchor?: 'start' | 'middle' | 'end'; mono?: boolean; strong?: boolean; size?: number; muted?: boolean }) => (
+const T = ({ x, y, children, anchor = 'start', mono, strong, size = 12, muted = true }: { x: number; y: number; children: ReactNode; anchor?: 'start' | 'middle' | 'end'; mono?: boolean; strong?: boolean; size?: number; muted?: boolean }) => (
   <text x={x} y={y} textAnchor={anchor} fontSize={size} className={`${muted ? 'fill-muted-foreground' : 'fill-foreground'} ${mono ? 'num' : ''}`} fontWeight={strong ? 600 : 400}>{children}</text>
 )
 
 export function MethodBars({ r, refLabel }: { r: ProductResult; refLabel: string }) {
   const rows: [string, number | null, string][] = [
-    ['Cost-plus', r.prices.costPlus, 'fill-chart-3'],
-    ['Reference minus', r.prices.refMinus, 'fill-chart-1'],
-    ['Value pricing', r.prices.value, 'fill-chart-2'],
-    ['Market pricing', r.prices.market, 'fill-chart-4'],
+    ['Cost-plus', r.prices.costPlus, 'fill-reference'],
+    ['Reference minus', r.prices.refMinus, 'fill-anchor'],
+    ['Value pricing', r.prices.value, 'fill-chart-1'],
+    ['Market pricing', r.prices.market, 'fill-chart-3'],
   ]
   return (
     <Sized h={176}>
@@ -46,7 +46,7 @@ export function MethodBars({ r, refLabel }: { r: ProductResult; refLabel: string
                   ) : (
                     <>
                       <rect x={x0} y={y} width={96} height={20} rx={3} fill="none" className="stroke-ring" strokeDasharray="3 3" />
-                      <T x={x0 + 10} y={y + 14} size={11}>Needs input</T>
+                      <T x={x0 + 10} y={y + 14} size={12}>Needs input</T>
                     </>
                   )}
                 </g>
@@ -81,16 +81,16 @@ export function RampChart({ ramp, share }: { ramp: ProductResult['ramp']; share:
             {[0, 0.5, 1].map((t) => (
               <g key={t}>
                 <line x1={x0} x2={x1} y1={yb - (yb - yt) * t} y2={yb - (yb - yt) * t} className="stroke-border" />
-                <T x={x0 - 6} y={yb - (yb - yt) * t + 3} anchor="end" size={10}>{f1((max * t) / 1000)} Mt</T>
+                <T x={x0 - 6} y={yb - (yb - yt) * t + 3} anchor="end" size={11}>{f1((max * t) / 1000)} Mt</T>
               </g>
             ))}
-            <path d={area} className="fill-muted" />
-            <path d={line} fill="none" className="stroke-foreground" strokeWidth={1.75} strokeLinejoin="round" />
-            <circle cx={X(peak)} cy={Y(ramp[peak].kt)} r={3.5} className="fill-foreground" />
-            <T x={X(peak) + 8} y={Y(ramp[peak].kt) - 8} mono muted={false} size={11}>{Math.round(share * 1000) / 10}% share · {f1(ramp[peak].kt)} kt</T>
-            <T x={x0} y={yb + 18} size={10}>2026</T>
-            <T x={X(peak)} y={yb + 18} anchor="middle" size={10}>{ramp[peak].year}</T>
-            <T x={x1} y={yb + 18} anchor="end" size={10}>2035</T>
+            <path d={area} className="fill-accent" />
+            <path d={line} fill="none" className="stroke-primary" strokeWidth={1.75} strokeLinejoin="round" />
+            <circle cx={X(peak)} cy={Y(ramp[peak].kt)} r={3.5} className="fill-primary" />
+            <T x={X(peak) + 8} y={Y(ramp[peak].kt) - 8} mono muted={false} size={12}>{Math.round(share * 1000) / 10}% share · {f1(ramp[peak].kt)} kt</T>
+            <T x={x0} y={yb + 18} size={11}>2026</T>
+            <T x={X(peak)} y={yb + 18} anchor="middle" size={11}>{ramp[peak].year}</T>
+            <T x={x1} y={yb + 18} anchor="end" size={11}>2035</T>
           </g>
         )
       }}
@@ -111,20 +111,20 @@ export function Waterfall({ r }: { r: ProductResult }) {
         return (
           <g>
             <defs>
-              <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" strokeWidth="1.4" className="stroke-chart-2" /></pattern>
+              <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" strokeWidth="1.4" className="stroke-reference" /></pattern>
             </defs>
             <line x1={0} x2={w} y1={Y(0)} y2={Y(0)} className="stroke-ring" />
             {wf.map((b, i) => {
               const x = gap + (bw + gap) * i
               const top = Math.min(Y(b.from), Y(b.to)), h = Math.max(Math.abs(Y(b.from) - Y(b.to)), 2)
               const dec = b.kind === 'delta' && b.value < 0
-              const cls = b.kind === 'total' ? 'fill-chart-1' : dec ? '' : 'fill-chart-2'
+              const cls = b.kind === 'total' ? 'fill-anchor' : dec ? '' : 'fill-chart-1'
               return (
                 <g key={b.label}>
-                  <rect x={x} y={top} width={bw} height={h} rx={2} className={cls} fill={dec ? 'url(#hatch)' : undefined} stroke={dec ? 'var(--chart-2)' : undefined} strokeDasharray={dec ? '3 2' : undefined} />
+                  <rect x={x} y={top} width={bw} height={h} rx={2} className={cls} fill={dec ? 'url(#hatch)' : undefined} stroke={dec ? 'var(--reference)' : undefined} strokeDasharray={dec ? '3 2' : undefined} />
                   <T x={x + bw / 2} y={top - 6} anchor="middle" mono strong muted={false}>{b.kind === 'total' ? f2(b.value) : sign(b.value)}</T>
                   <foreignObject x={x + bw / 2 - (bw + gap - 6) / 2} y={yb + 6} width={bw + gap - 6} height={30}>
-                    <div className="text-center text-[10px] leading-3 text-muted-foreground">{b.label}</div>
+                    <div className="text-center text-xs leading-3 text-muted-foreground">{b.label}</div>
                   </foreignObject>
                 </g>
               )
@@ -145,9 +145,9 @@ export function CarbonChart({ r, carbonPrice, onSet }: { r: ProductResult; carbo
         </div>
         <div className="relative flex flex-col items-center gap-1.5 rounded-[10px] border bg-card p-3.5 text-center">
           <Info className="size-4 text-muted-foreground" />
-          <div className="text-[13px] font-medium">Add a carbon price</div>
-          <div className="text-[11px] text-muted-foreground">Carbon effect is 0 until a price is set</div>
-          <Button size="sm" variant="outline" className="mt-1 h-7" onClick={onSet}>Set carbon price</Button>
+          <div className="text-sm font-medium">Add a carbon price</div>
+          <div className="text-[13px] text-muted-foreground">Carbon effect is 0 until a price is set</div>
+          <Button size="sm" variant="outline" className="mt-1" onClick={onSet}>Set carbon price</Button>
         </div>
       </div>
     )
@@ -166,10 +166,10 @@ export function CarbonChart({ r, carbonPrice, onSet }: { r: ProductResult; carbo
               const x = gap + (bw + gap) * i
               return (
                 <g key={s.id}>
-                  <rect x={x} y={140 - h} width={bw} height={h} rx={3} className={s.price === carbonPrice ? 'fill-chart-1' : 'fill-chart-4'} />
+                  <rect x={x} y={140 - h} width={bw} height={h} rx={3} className={s.price === carbonPrice ? 'fill-anchor' : 'fill-reference'} />
                   <T x={x + bw / 2} y={140 - h - 6} anchor="middle" mono strong muted={false}>+{f2(s.delta)}</T>
-                  <T x={x + bw / 2} y={156} anchor="middle" size={10}>{s.label}</T>
-                  <T x={x + bw / 2} y={168} anchor="middle" size={10} mono>{s.price} USD/t</T>
+                  <T x={x + bw / 2} y={156} anchor="middle" size={11}>{s.label}</T>
+                  <T x={x + bw / 2} y={168} anchor="middle" size={11} mono>{s.price} USD/t</T>
                 </g>
               )
             })}
@@ -180,7 +180,7 @@ export function CarbonChart({ r, carbonPrice, onSet }: { r: ProductResult; carbo
   )
 }
 
-const ING_FILL: Record<string, string> = { sulphur: 'fill-chart-1', rockDry: 'fill-chart-2', rockWet: 'fill-chart-3', ammonia: 'fill-chart-4', kcl: 'fill-ring', acp: 'fill-border' }
+const ING_FILL: Record<string, string> = { sulphur: 'fill-anchor', rockDry: 'fill-chart-2', rockWet: 'fill-chart-3', ammonia: 'fill-chart-1', kcl: 'fill-reference', acp: 'fill-border' }
 export function CostStack({ rows }: { rows: { label: string; lines: CostLine[]; extra?: { label: string; usd: number }[] }[] }) {
   const maxTotal = Math.max(...rows.map((r) => r.lines.reduce((a, l) => a + l.usd, 0) + (r.extra?.reduce((a, e) => a + e.usd, 0) ?? 0)), 1)
   return (
@@ -201,7 +201,7 @@ export function CostStack({ rows }: { rows: { label: string; lines: CostLine[]; 
                     return (
                       <g key={l.label}>
                         <rect x={xx} y={y} width={wd} height={30} className={ING_FILL[l.id] ?? 'fill-border'} />
-                        {wd > 54 && <T x={xx + wd / 2} y={y + 19} anchor="middle" mono size={11} muted={false}><tspan className={l.id === 'sulphur' || l.id === 'rockDry' ? 'fill-background' : 'fill-foreground'}>{f2(l.usd)}</tspan></T>}
+                        {wd > 54 && <T x={xx + wd / 2} y={y + 19} anchor="middle" mono size={12} muted={false}><tspan className={l.id === 'sulphur' || l.id === 'rockDry' || l.id === 'ammonia' ? 'fill-white' : 'fill-foreground'}>{f2(l.usd)}</tspan></T>}
                       </g>
                     )
                   })}
@@ -220,20 +220,20 @@ export function Legend({ items }: { items: { label: string; cls: string }[] }) {
   return (
     <div className="flex flex-wrap gap-3.5">
       {items.map((i) => (
-        <span key={i.label} className="flex items-center gap-1.5 text-xs text-muted-foreground"><span className={`size-2.5 rounded-sm ${i.cls}`} />{i.label}</span>
+        <span key={i.label} className="flex items-center gap-1.5 text-[13px] text-muted-foreground"><span className={`size-2.5 rounded-sm ${i.cls}`} />{i.label}</span>
       ))}
     </div>
   )
 }
 export const ING_LEGEND = [
-  { label: 'Rock (dry)', cls: 'bg-chart-2' }, { label: 'Rock (wet)', cls: 'bg-chart-3' }, { label: 'Sulphur', cls: 'bg-chart-1' }, { label: 'Ammonia', cls: 'bg-chart-4' }, { label: 'KCl', cls: 'bg-ring' },
+  { label: 'Rock (dry)', cls: 'bg-chart-2' }, { label: 'Rock (wet)', cls: 'bg-chart-3' }, { label: 'Sulphur', cls: 'bg-anchor' }, { label: 'Ammonia', cls: 'bg-chart-1' }, { label: 'KCl', cls: 'bg-reference' },
 ]
 
 export function TrendLines() {
   const series: [string, number[], string, string | undefined][] = [
-    ['Sulphur', OUTLOOK.sulphur, 'stroke-chart-1', undefined],
-    ['Ammonia', OUTLOOK.ammonia, 'stroke-chart-2', undefined],
-    ['KCl', OUTLOOK.kcl, 'stroke-chart-3', '4 3'],
+    ['Sulphur', OUTLOOK.sulphur, 'stroke-anchor', undefined],
+    ['Ammonia', OUTLOOK.ammonia, 'stroke-chart-1', undefined],
+    ['KCl', OUTLOOK.kcl, 'stroke-reference', '4 3'],
   ]
   return (
     <Sized h={230}>
@@ -243,7 +243,7 @@ export function TrendLines() {
         const ends = series.map(([, v]) => Y(v[8])).sort((a, b) => a - b)
         return (
           <g>
-            {[0, 1, 2, 3].map((i) => (<g key={i}><line x1={xs} x2={xe + 30} y1={yb - ((yb - yt) * i) / 3} y2={yb - ((yb - yt) * i) / 3} className="stroke-border" /><T x={xs - 6} y={yb - ((yb - yt) * i) / 3 + 3} anchor="end" size={10}>{Math.round((mx * i) / 3 / 50) * 50}</T></g>))}
+            {[0, 1, 2, 3].map((i) => (<g key={i}><line x1={xs} x2={xe + 30} y1={yb - ((yb - yt) * i) / 3} y2={yb - ((yb - yt) * i) / 3} className="stroke-border" /><T x={xs - 6} y={yb - ((yb - yt) * i) / 3 + 3} anchor="end" size={11}>{Math.round((mx * i) / 3 / 50) * 50}</T></g>))}
             {series.map(([n, v, cls, dash]) => (
               <g key={n}>
                 <path d={v.map((val, i) => `${i ? 'L' : 'M'} ${X(i)} ${Y(val)}`).join(' ')} fill="none" className={cls} strokeWidth={1.75} strokeDasharray={dash} strokeLinejoin="round" />
@@ -251,9 +251,9 @@ export function TrendLines() {
             ))}
             {series.map(([n, v]) => {
               const idx = ends.indexOf(Y(v[8]))
-              return <T key={n} x={X(8) + 8} y={ends[0] + idx * 15 + 4} mono muted={false} size={11}>{n} {v[8]}</T>
+              return <T key={n} x={X(8) + 8} y={ends[0] + idx * 15 + 4} mono muted={false} size={12}>{n} {v[8]}</T>
             })}
-            {[0, 2, 4, 6, 8].map((i) => <T key={i} x={X(i)} y={yb + 18} anchor="middle" size={10}>{OUTLOOK.years[i]}</T>)}
+            {[0, 2, 4, 6, 8].map((i) => <T key={i} x={X(i)} y={yb + 18} anchor="middle" size={11}>{OUTLOOK.years[i]}</T>)}
           </g>
         )
       }}

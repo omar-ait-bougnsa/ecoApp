@@ -85,11 +85,11 @@ export default function Hypotheses({ data, onDone }: { data: SimData; onDone?: (
     const k = f.key as keyof RunInput
     if (f.kind === 'ro') {
       const text = f.key === 'unitCost' ? f2(result.unitCost) : f.key === 'addressable' ? input.addressable.toLocaleString('en-US') : input.productIds.map((id) => ctx.products.find((p) => p.id === id)?.name).join(', ')
-      return <span className="num inline-flex h-7 items-center rounded-md bg-muted px-2 text-[13px]">{text}</span>
+      return <span className="num inline-flex h-7 items-center rounded-md bg-muted px-2 text-sm">{text}</span>
     }
     if (f.kind === 'sel') return (
       <Select value={String(val(k))} onValueChange={(v) => set(k, v as never)}>
-        <SelectTrigger size="sm" className="h-7 min-w-[130px] text-[13px]" aria-label={f.label}><SelectValue /></SelectTrigger>
+        <SelectTrigger size="sm" className="h-7 min-w-[130px] text-sm" aria-label={f.label}><SelectValue /></SelectTrigger>
         <SelectContent>{f.options!.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent>
       </Select>
     )
@@ -107,7 +107,7 @@ export default function Hypotheses({ data, onDone }: { data: SimData; onDone?: (
           const n = parseFloat(t); if (Number.isNaN(n)) return
           set(k, (f.kind === 'pct' ? n / 100 : n) as never)
         }}
-        className={cn('num h-7 w-[104px] px-2 text-right text-[13px]', edited(k) && 'border-foreground')}
+        className={cn('num h-7 w-[104px] px-2 text-right text-sm', edited(k) && 'border-foreground')}
       />
     )
   }
@@ -117,9 +117,9 @@ export default function Hypotheses({ data, onDone }: { data: SimData; onDone?: (
       {nChanges > 0 && (
         <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-[10px] border border-foreground bg-background px-4 py-2.5" data-testid="staged-bar">
           <Pencil className="size-3.5" />
-          <span className="text-[13px] font-medium">{nChanges} staged change{nChanges > 1 ? 's' : ''}</span>
-          <span className="min-w-0 flex-1 truncate text-[13px] text-muted-foreground">{changedNames.join(' · ')}</span>
-          <Input value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Reason (audit trail)" className="h-7 w-[200px] text-[13px]" />
+          <span className="text-sm font-medium">{nChanges} staged change{nChanges > 1 ? 's' : ''}</span>
+          <span className="min-w-0 flex-1 truncate text-sm text-muted-foreground">{changedNames.join(' · ')}</span>
+          <Input value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Reason (audit trail)" className="h-7 w-[200px] text-sm" />
           <Button size="sm" variant="ghost" onClick={() => setDraft({})}>Discard</Button>
           <Button size="sm" onClick={rerun}>Re-run (v{sim.runs.length + 1})</Button>
         </div>
@@ -129,7 +129,7 @@ export default function Hypotheses({ data, onDone }: { data: SimData; onDone?: (
           <Card title="Analysis period" sub="The date range to analyse: a day, a month, a year or any range. Prices and costs are the day-weighted average of the data inside it.">
             <div className="flex flex-wrap items-center gap-3">
               <div className="w-[360px] max-w-full"><PeriodPicker variant="field" value={{ from: val('periodFrom'), to: val('periodTo') }} onChange={(p) => { set('periodFrom', p.from); set('periodTo', p.to) }} /></div>
-              {('periodFrom' in draft || 'periodTo' in draft) ? <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-[3px] font-mono text-[11px] font-medium"><span className="size-1.5 rounded-full bg-foreground" />You edited</span> : <SourceChip>Parameters</SourceChip>}
+              {('periodFrom' in draft || 'periodTo' in draft) ? <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-[3px] font-mono text-[13px] font-medium"><span className="size-1.5 rounded-full bg-foreground" />You edited</span> : <SourceChip>Parameters</SourceChip>}
             </div>
           </Card>
         </div>
@@ -142,19 +142,19 @@ export default function Hypotheses({ data, onDone }: { data: SimData; onDone?: (
                 const flagActive = f.flag && !(draft.resolved ?? input.resolved)[f.flag]
                 return (
                   <div key={String(f.key)} data-key={String(f.key)} className="flex items-center gap-3 border-b py-2.5 last:border-b-0 rounded-md transition-shadow">
-                    <div className="flex min-w-0 flex-1 items-center gap-1.5 text-[13px]">
+                    <div className="flex min-w-0 flex-1 items-center gap-1.5 text-sm">
                       <span className={cn(f.kind === 'ro' && 'text-muted-foreground')}>{f.label}</span>
                       {flagActive && <AlertTriangle className="size-3.5 shrink-0 text-warning-fg" />}
                     </div>
-                    {ed && <span className="num text-xs text-muted-foreground line-through">{f.kind === 'pct' ? `${Math.round((input[k] as number) * 1000) / 10}` : String(input[k] ?? '—')}</span>}
+                    {ed && <span className="num text-[13px] text-muted-foreground line-through">{f.kind === 'pct' ? `${Math.round((input[k] as number) * 1000) / 10}` : String(input[k] ?? '—')}</span>}
                     {renderValue(f)}
-                    <span className="hidden w-[68px] text-xs text-muted-foreground sm:block">{f.unit}</span>
+                    <span className="hidden w-[68px] text-[13px] text-muted-foreground sm:block">{f.unit}</span>
                     <span className="hidden w-[150px] justify-end sm:flex">
-                      {ed ? <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-[3px] font-mono text-[11px] font-medium"><span className="size-1.5 rounded-full bg-foreground" />You edited</span>
-                        : f.prov === 'Agent assumption' ? <span className="rounded-md bg-warning-bg px-2 py-[3px] font-mono text-[11px] font-medium text-warning-fg">Agent assumption</span>
+                      {ed ? <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-[3px] font-mono text-[13px] font-medium"><span className="size-1.5 rounded-full bg-foreground" />You edited</span>
+                        : f.prov === 'Agent assumption' ? <span className="rounded-md bg-warning-bg px-2 py-[3px] font-mono text-[13px] font-medium text-warning-fg">Agent assumption</span>
                           : f.prov ? <SourceChip>{f.prov}</SourceChip> : null}
                     </span>
-                    {flagActive && <Button size="sm" variant="outline" className="h-7" onClick={() => confirm(f.flag!)}>{f.flag === 'U1' ? 'Confirm t/ha' : 'Accept'}</Button>}
+                    {flagActive && <Button size="sm" variant="outline" onClick={() => confirm(f.flag!)}>{f.flag === 'U1' ? 'Confirm t/ha' : 'Accept'}</Button>}
                   </div>
                 )
               })}

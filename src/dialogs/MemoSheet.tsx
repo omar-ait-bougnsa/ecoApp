@@ -40,14 +40,14 @@ export function MemoSheet() {
           {!memo && <p className="text-sm text-muted-foreground">Run a simulation to get a decision memo.</p>}
           {memo?.sections.map((s) => (
             <section key={s.title} className="space-y-1.5">
-              <h4 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{s.title}</h4>
+              <h4 className="text-[13px] font-medium uppercase tracking-wider text-muted-foreground">{s.title}</h4>
               {s.paragraphs?.map((p, i) => <p key={i} className="text-sm leading-[22px]">{p}</p>)}
-              {s.items?.map((it, i) => <div key={i} className="flex items-start gap-2 text-[13px]"><TriangleAlert className={`mt-0.5 size-3.5 shrink-0 ${it.tone === 'warning' ? 'text-warning-fg' : 'text-muted-foreground'}`} />{it.text}</div>)}
+              {s.items?.map((it, i) => <div key={i} className="flex items-start gap-2 text-sm"><TriangleAlert className={`mt-0.5 size-3.5 shrink-0 ${it.tone === 'warning' ? 'text-warning-fg' : 'text-muted-foreground'}`} />{it.text}</div>)}
             </section>
           ))}
-          {memo && <section className="space-y-2"><h4 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Sources</h4><div className="flex flex-wrap gap-1.5">{memo.sources.map((s) => <SourceChip key={s}>{s}</SourceChip>)}</div></section>}
+          {memo && <section className="space-y-2"><h4 className="text-[13px] font-medium uppercase tracking-wider text-muted-foreground">Sources</h4><div className="flex flex-wrap gap-1.5">{memo.sources.map((s) => <SourceChip key={s}>{s}</SourceChip>)}</div></section>}
         </div>
-        <div className="flex h-14 shrink-0 items-center gap-2 border-t px-6 text-xs text-muted-foreground">Was this memo useful?<span className="flex-1" /><Button size="sm" variant="ghost" className="gap-1.5"><ThumbsUp className="size-3.5" />Helpful</Button><Button size="sm" variant="ghost" className="gap-1.5"><ThumbsDown className="size-3.5" />Not helpful</Button></div>
+        <div className="flex h-14 shrink-0 items-center gap-2 border-t px-6 text-[13px] text-muted-foreground">Was this memo useful?<span className="flex-1" /><Button size="sm" variant="ghost" className="gap-1.5"><ThumbsUp className="size-3.5" />Helpful</Button><Button size="sm" variant="ghost" className="gap-1.5"><ThumbsDown className="size-3.5" />Not helpful</Button></div>
       </SheetContent>
     </Sheet>
   )

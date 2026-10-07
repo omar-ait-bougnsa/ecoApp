@@ -27,24 +27,24 @@ export function ResultCard({ simId, version, compact }: { simId: string; version
         <span className="text-sm font-semibold">{sim.title.replace(/ · .*/, '')}</span>
         <Pill className="font-mono">v{version}</Pill>
         <span className="flex-1" />
-        <span className="text-xs text-muted-foreground">{periodLabel({ from: run.input.periodFrom, to: run.input.periodTo })} · price type {run.input.priceType}</span>
+        <span className="text-[13px] text-muted-foreground">{periodLabel({ from: run.input.periodFrom, to: run.input.periodTo })} · price type {run.input.priceType}</span>
       </div>
       <PriceLadder r={r} refLabel={run.input.referenceId} benchmark={run.input.benchmark} mini />
       <div className={cn('mt-2 grid gap-2.5', compact ? 'grid-cols-1' : 'grid-cols-3')}>
         {kpis.map(([l, v, u, d]) => (
           <div key={l} className="rounded-lg border p-3">
-            <div className="text-xs text-muted-foreground">{l}</div>
-            <div className="mt-0.5 flex items-end gap-1"><span className="num text-[22px] font-semibold leading-7 tracking-tight">{v}</span><span className="pb-0.5 text-[11px] text-muted-foreground">{u}</span></div>
-            <div className="num text-[11px] text-muted-foreground">{d}</div>
+            <div className="text-[13px] text-muted-foreground">{l}</div>
+            <div className="mt-0.5 flex items-end gap-1"><span className="num text-[22px] font-semibold leading-7 tracking-tight">{v}</span><span className="pb-0.5 text-[13px] text-muted-foreground">{u}</span></div>
+            <div className="num text-[13px] text-muted-foreground">{d}</div>
           </div>
         ))}
       </div>
       {top.length > 0 && (
         <div className="mt-3 space-y-1.5">
           {top.map((f) => (
-            <div key={f.id} className={cn('flex items-start gap-2 rounded-lg px-3 py-2 text-[13px]', f.severity === 'error' ? 'bg-danger-bg text-danger-fg' : 'bg-warning-bg text-warning-fg')}>
+            <div key={f.id} className={cn('flex items-start gap-2 rounded-lg px-3 py-2 text-sm', f.severity === 'error' ? 'bg-danger-bg text-danger-fg' : 'bg-warning-bg text-warning-fg')}>
               <FlagIcon sev={f.severity} className="mt-0.5 size-4 text-current" />
-              <div><div className="font-medium">{f.title}</div>{f.detail && <div className="text-xs opacity-80">{f.detail}</div>}</div>
+              <div><div className="font-medium">{f.title}</div>{f.detail && <div className="text-[13px] opacity-80">{f.detail}</div>}</div>
             </div>
           ))}
         </div>

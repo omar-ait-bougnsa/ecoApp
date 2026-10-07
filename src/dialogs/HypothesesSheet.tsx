@@ -16,7 +16,7 @@ export function HypothesesSheet() {
         <SheetDescription className="sr-only">Editable assumptions for this simulation</SheetDescription>
         <div className="flex h-16 shrink-0 flex-col justify-center border-b pl-6 pr-14">
           <SheetTitle className="text-base">Hypotheses</SheetTitle>
-          <p className="text-xs text-muted-foreground">Every input and where it comes from. Changes are staged and create a new version.</p>
+          <p className="text-[13px] text-muted-foreground">Every input and where it comes from. Changes are staged and create a new version.</p>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto p-5" id="hyp-scroll">
           {data && <Hypotheses data={data} onDone={() => setUI({ hypothesesOpen: false })} />}

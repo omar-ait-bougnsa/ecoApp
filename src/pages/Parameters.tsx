@@ -33,30 +33,30 @@ export default function ParametersPage() {
     if (r.kind === 'sel') return <Select value={String(v)} onValueChange={(x) => setParams({ [r.key]: x } as Partial<Parameters>)}><SelectTrigger className="w-[150px]" aria-label={r.label}><SelectValue /></SelectTrigger><SelectContent>{r.options!.map(([a, b]) => <SelectItem key={a} value={a}>{b}</SelectItem>)}</SelectContent></Select>
     const disp = r.kind === 'pct' ? String(Math.round((v as number) * 1000) / 10) : String(v)
     return (
-      <div className="relative w-[130px]"><Input aria-label={r.label} key={disp} defaultValue={disp} inputMode="decimal" className="num pr-14 text-right" onBlur={(e) => { const n = parseFloat(e.target.value); if (!Number.isNaN(n)) setParams({ [r.key]: r.kind === 'pct' ? n / 100 : n } as Partial<Parameters>) }} /><span className="pointer-events-none absolute right-3 top-2 text-xs text-muted-foreground">{r.unit}</span></div>
+      <div className="relative w-[130px]"><Input aria-label={r.label} key={disp} defaultValue={disp} inputMode="decimal" className="num pr-14 text-right" onBlur={(e) => { const n = parseFloat(e.target.value); if (!Number.isNaN(n)) setParams({ [r.key]: r.kind === 'pct' ? n / 100 : n } as Partial<Parameters>) }} /><span className="pointer-events-none absolute right-3 top-2 text-[13px] text-muted-foreground">{r.unit}</span></div>
     )
   }
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-      <div className="hidden h-14 shrink-0 items-center border-b px-6 lg:flex"><button aria-label="Toggle sidebar" onClick={() => setUI({ sidebarOpen: !ui.sidebarOpen })} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent"><PanelLeft className="size-4" /></button></div>
-      <div className="mx-auto w-full max-w-[860px] space-y-4 px-4 py-6 sm:px-6">
-        <div className="flex items-center gap-3"><div className="flex-1"><h1 className="text-2xl font-semibold tracking-tight">Parameters</h1><p className="mt-1 text-[13px] text-muted-foreground">Global defaults. Each run pre-fills from these and can override them.</p></div><Button variant="ghost" onClick={() => { setParams(DEFAULT_PARAMS); toast('Parameters reset') }}>Reset all</Button></div>
+      <div className="hidden h-14 shrink-0 items-center border-b px-8 md:flex"><button aria-label="Toggle sidebar" onClick={() => setUI({ sidebarOpen: !ui.sidebarOpen })} title="Show or hide the sidebar" className="rounded-md border bg-background p-2 text-foreground hover:bg-accent"><PanelLeft className="size-4" /></button></div>
+      <div className="mx-auto w-full max-w-[860px] space-y-6 px-4 py-8 sm:px-8">
+        <div className="flex items-center gap-3"><div className="flex-1"><h1 className="text-[28px] font-semibold leading-9 tracking-tight">Parameters</h1><p className="mt-1 text-sm text-muted-foreground">Global defaults. Each run pre-fills from these and can override them.</p></div><Button variant="outline" onClick={() => { setParams(DEFAULT_PARAMS); toast('Parameters reset') }}>Reset all to defaults</Button></div>
         {SECTIONS.map((s) => (
-          <section key={s.title} className="rounded-xl border bg-card p-5">
-            <h3 className="text-sm font-semibold">{s.title}</h3><p className="mb-2 text-xs text-muted-foreground">{s.sub}</p>
+          <section key={s.title} className="rounded-xl border bg-card p-6">
+            <h3 className="text-base font-semibold leading-6">{s.title}</h3><p className="mb-2 mt-0.5 text-[13px] text-muted-foreground">{s.sub}</p>
             {s.rows.map((r) => (
               <div key={r.key} className="flex items-center gap-4 border-b py-3 last:border-0">
-                <div className="min-w-0 flex-1"><div className="text-[13px] font-medium">{r.label}</div><div className="text-xs text-muted-foreground">{r.desc}</div></div>
+                <div className="min-w-0 flex-1"><div className="text-sm font-medium">{r.label}</div><div className="text-[13px] text-muted-foreground">{r.desc}</div></div>
                 {render(r)}
-                <button className="w-10 text-xs text-muted-foreground hover:text-foreground" onClick={() => setParams({ [r.key]: DEFAULT_PARAMS[r.key] } as Partial<Parameters>)}>Reset</button>
+                <button className="inline-flex h-8 shrink-0 items-center rounded-md border bg-background px-3 text-sm font-medium hover:bg-accent" onClick={() => setParams({ [r.key]: DEFAULT_PARAMS[r.key] } as Partial<Parameters>)}>Reset</button>
               </div>
             ))}
           </section>
         ))}
-        <section className="rounded-xl border bg-card p-5">
-          <h3 className="text-sm font-semibold">Appearance</h3>
-          <div className="flex items-center gap-4 py-3"><div className="flex-1"><div className="text-[13px] font-medium">Theme</div><div className="text-xs text-muted-foreground">Follows your system by default</div></div>
-            <ToggleGroup type="single" value={ui.theme} onValueChange={(v) => v && setUI({ theme: v as 'system' | 'light' | 'dark' })} variant="outline" size="sm">{['system', 'light', 'dark'].map((t) => <ToggleGroupItem key={t} value={t} className="px-3 text-[13px] capitalize">{t}</ToggleGroupItem>)}</ToggleGroup></div>
+        <section className="rounded-xl border bg-card p-6">
+          <h3 className="text-base font-semibold leading-6">Appearance</h3>
+          <div className="flex items-center gap-4 py-3"><div className="flex-1"><div className="text-sm font-medium">Theme</div><div className="text-[13px] text-muted-foreground">Follows your system by default</div></div>
+            <ToggleGroup type="single" value={ui.theme} onValueChange={(v) => v && setUI({ theme: v as 'system' | 'light' | 'dark' })} variant="outline" size="sm">{['system', 'light', 'dark'].map((t) => <ToggleGroupItem key={t} value={t} className="px-3 text-sm capitalize">{t}</ToggleGroupItem>)}</ToggleGroup></div>
         </section>
       </div>
     </div>

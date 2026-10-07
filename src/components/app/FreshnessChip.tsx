@@ -20,7 +20,7 @@ export function FreshnessChip({ className }: { className?: string }) {
   const f = useFreshness(); const nav = useNavigate()
   if (!f.latest) return null
   return (
-    <button onClick={() => nav('/uploads')} className={cn('inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent', className)} title="Open Uploads">
+    <button onClick={() => nav('/uploads')} className={cn('inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent', className)} title="Open Uploads">
       <Dot tone={f.warn ? 'warning' : 'fg'} />
       Latest upload · {dayLong(f.latest.uploadedAt)}{f.through ? ` · Data through ${dayShort(f.through.dataThrough)}` : ''}
     </button>

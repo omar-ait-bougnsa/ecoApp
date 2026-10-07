@@ -1,6 +1,7 @@
+import { MascotIcon } from './MascotIcon'
 import { cn } from '@/lib/utils'
 
-/** The sprout mascot. `large` uses the 512px asset (Home hero); otherwise a 96px one for small spots. */
+/** The sprout mascot mark, used as the compact brand logo in bars and headers. */
 export function Logo({ className, large }: { className?: string; large?: boolean }) {
-  return <img src={large ? '/mascot.png' : '/mascot-sm.png'} alt="Eco Value Simulator" className={cn('size-7 shrink-0 object-contain', className)} draggable={false} />
+  return <MascotIcon size={large ? 96 : 28} className={cn(className)} />
 }
